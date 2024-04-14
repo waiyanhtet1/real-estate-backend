@@ -41,6 +41,7 @@ const login = async (req, res) => {
   // set token and send to user
 
   res.status(201).json({ message: "Correct!" });
+  console.log(user);
 };
 
 const logout = (req, res) => {
