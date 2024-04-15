@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const prisma = require("../lib/prisma");
+const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -26,10 +27,12 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { username, password } = req.body;
+
   //   find username in db
   const user = await prisma.user.findUnique({
     where: { username },
   });
+
   if (!user)
     return res.status(401).json({ message: "No user with this name found!" });
 
@@ -39,9 +42,18 @@ const login = async (req, res) => {
     return res.status(401).json({ message: "Incorrect Password!" });
 
   // set token and send to user
+  const age = 1000 * 60 * 60 * 24 * 7;
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: age,
+  });
 
-  res.status(201).json({ message: "Correct!" });
-  console.log(user);
+  res
+    .cookie("token", token, {
+      httpOnly: true,
+      maxAge: age,
+    })
+    .status(200)
+    .json({ message: "Login Successfully!" });
 };
 
 const logout = (req, res) => {
