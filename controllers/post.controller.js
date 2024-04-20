@@ -15,10 +15,11 @@ const getPost = async (req, res) => {
   try {
     const post = await prisma.post.findUnique({
       where: { id },
+      // for detail page need to get post detail some user info
       include: {
         postDetail: true,
         user: {
-          select: { username: true, avatar: true },
+          select: { username: true, avatar: true }, // user info only need name and pic
         },
       },
     });
@@ -43,10 +44,9 @@ const addPost = async (req, res) => {
     const addPost = await prisma.post.create({
       data: {
         ...body.postData,
-        // userid is required in post model for connect user model
-        userId: req.userId,
+        userId: req.userId, // userid is required in post model for connect user model
         postDetail: {
-          create: body.postDetail,
+          create: body.postDetail, // create for postDetail in different object
         },
       },
     });
