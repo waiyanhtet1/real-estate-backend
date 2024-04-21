@@ -11,17 +11,9 @@ const app = express();
 app.use(express.json());
 // app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
-const whitelist = [
-  "http://localhost:5173",
-  "https://real-estate-ui-rose.vercel.app",
-];
 const corsOptions = {
   credentials: true, // This is important.
-  origin: (origin, callback) => {
-    if (whitelist.includes(origin)) return callback(null, true);
-
-    callback(new Error("Not allowed by CORS"));
-  },
+  origin: "http://localhost:5173" || "https://real-estate-ui-rose.vercel.app/",
 };
 app.use(cors(corsOptions));
 
