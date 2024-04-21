@@ -13,7 +13,7 @@ app.use(express.json());
 
 const whitelist = [
   "http://localhost:5173",
-  "https://real-estate-backend-8xxt.onrender.com",
+  //   "https://real-estate-backend-8xxt.onrender.com",
 ];
 const corsOptions = {
   credentials: true, // This is important.
